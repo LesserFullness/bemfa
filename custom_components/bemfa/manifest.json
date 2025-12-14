@@ -8,7 +8,8 @@
   "dependencies": [],
   "documentation": "https://github.com/larry-wong/bemfa",
   "homekit": {},
-  "iot_class": "cloud_push",
+  "homeassistant": "2025.11.0",  // 添加此行
+  "iot_class": "cloud_push",  // 添加设备类型
   "issue_tracker": "https://github.com/larry-wong/bemfa/issues",
   "requirements": ["paho-mqtt==1.6.1"],
   "ssdp": [],
