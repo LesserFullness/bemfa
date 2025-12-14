@@ -25,25 +25,20 @@ _LOGGING = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up bemfa from a config entry."""
+    # 新的异步初始化代码
     hass.data.setdefault(DOMAIN, {})
+    hass.data[DOMAIN][entry.entry_id] = entry.data
 
-    service = BemfaService(hass, entry.data[CONF_UID])
-    await service.async_start(
-        entry.options[OPTIONS_CONFIG] if OPTIONS_CONFIG in entry.options else {}
+    # 添加平台
+    hass.async_create_task(
+        hass.config_entries.async_forward_entry_setup(entry, "switch")
     )
-
-    hass.data[DOMAIN][entry.entry_id] = {
-        "service": service,
-    }
 
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    data = hass.data[DOMAIN].get(entry.entry_id)
-    if data is not None:
-        data["service"].stop()
-        hass.data[DOMAIN].pop(entry.entry_id)
+    # 卸载处理
 
     return True
